@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Model Use-Case Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --c1: #D4924A; --c2: #F2B86A; --c3: #FFCF85;
+  --g1: #26B8DC; --g2: #5DD2EF; --g3: #9DE8FA;
+  --e1: #28BF6E; --e2: #5DD99A; --e3: #97EFBE;
+  --p1: #4F8FE6; --p2: #6EB0FF; --p3: #A4CCFF;
+  --k1: #9B55E0; --k2: #B87DFF; --k3: #D4AAFF;
+  --tier-cheap: #3DD68C;
+  --tier-mid:   #F5C842;
+  --tier-heavy: #F26060;
+  --best: #FFFFFF;
+  --bg:      #09090D;
+  --surface: #0F0F16;
+  --border:  #1C1C28;
+  --text:    #E8E8F2;
+  --muted:   #5C5C7A;
+  --muted2:  #383852;
+}
+
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  padding: 48px 20px 80px; min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 50% 22% at 5%  0%, rgba(212,146,74,0.06)  0%, transparent 55%),
+    radial-gradient(ellipse 45% 20% at 30% 0%, rgba(38,184,220,0.04)  0%, transparent 55%),
+    radial-gradient(ellipse 40% 18% at 55% 0%, rgba(40,191,110,0.04)  0%, transparent 55%),
+    radial-gradient(ellipse 40% 18% at 78% 0%, rgba(79,143,230,0.05)  0%, transparent 55%),
+    radial-gradient(ellipse 35% 16% at 98% 0%, rgba(155,85,224,0.05)  0%, transparent 55%);
+}
+
+/* ── HEADER ── */
+header { max-width: 1720px; margin: 0 auto 40px; }
+.eyebrow { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+h1 { font-size:clamp(20px,3vw,36px); font-weight:800; letter-spacing:-0.025em; line-height:1.1; margin-bottom:8px; }
+.subtitle { font-size:13px; color:var(--muted); line-height:1.6; max-width:640px; margin-bottom:22px; }
+
+/* ── LEGEND ── */
+.brand-row { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:14px; }
+.brand-group { display:flex; flex-direction:column; gap:5px; }
+.brand-title { font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; }
+.brand-pills { display:flex; gap:5px; flex-wrap:wrap; }
+.pill { display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border-radius:4px; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; white-space:nowrap; }
+.pip { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+.lp-c1{background:rgba(212,146,74,.14);color:var(--c1);border:1px solid rgba(212,146,74,.30);}
+.lp-c2{background:rgba(242,184,106,.12);color:var(--c2);border:1px solid rgba(242,184,106,.28);}
+.lp-c3{background:rgba(255,207,133,.10);color:var(--c3);border:1px solid rgba(255,207,133,.26);}
+.lp-g1{background:rgba(38,184,220,.12);color:var(--g1);border:1px solid rgba(38,184,220,.28);}
+.lp-g2{background:rgba(93,210,239,.10);color:var(--g2);border:1px solid rgba(93,210,239,.26);}
+.lp-g3{background:rgba(157,232,250,.09);color:var(--g3);border:1px solid rgba(157,232,250,.22);}
+.lp-e1{background:rgba(40,191,110,.12);color:var(--e1);border:1px solid rgba(40,191,110,.28);}
+.lp-e2{background:rgba(93,217,154,.10);color:var(--e2);border:1px solid rgba(93,217,154,.26);}
+.lp-e3{background:rgba(151,239,190,.09);color:var(--e3);border:1px solid rgba(151,239,190,.22);}
+.lp-p1{background:rgba(79,143,230,.12);color:var(--p1);border:1px solid rgba(79,143,230,.28);}
+.lp-p2{background:rgba(110,176,255,.10);color:var(--p2);border:1px solid rgba(110,176,255,.26);}
+.lp-p3{background:rgba(164,204,255,.09);color:var(--p3);border:1px solid rgba(164,204,255,.22);}
+.lp-k1{background:rgba(155,85,224,.12);color:var(--k1);border:1px solid rgba(155,85,224,.28);}
+.lp-k2{background:rgba(184,125,255,.10);color:var(--k2);border:1px solid rgba(184,125,255,.26);}
+.lp-k3{background:rgba(212,170,255,.09);color:var(--k3);border:1px solid rgba(212,170,255,.22);}
+
+.tier-key { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:4px; align-items:center; }
+.tier-key-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; }
+.tier-swatch { display:inline-flex; align-items:center; gap:5px; font-family:'DM Mono',monospace; font-size:10px; padding:2px 8px; border-radius:4px; border-width:1px; border-style:solid; }
+.ts-cheap{color:var(--tier-cheap);border-color:var(--tier-cheap);background:rgba(61,214,140,.08);}
+.ts-mid{color:var(--tier-mid);border-color:var(--tier-mid);background:rgba(245,200,66,.08);}
+.ts-heavy{color:var(--tier-heavy);border-color:var(--tier-heavy);background:rgba(242,96,96,.08);}
+.ts-best{color:#fff;border-color:#fff;background:rgba(255,255,255,.08);font-weight:700;}
+.ts-note { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); }
+
+/* ── CONTROLS BAR ── */
+.controls-bar {
+  max-width: 1720px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.controls-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+.ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+  user-select: none;
+}
+.ctrl-btn:hover {
+  background: rgba(255,255,255,0.09);
+  border-color: rgba(255,255,255,0.25);
+}
+.ctrl-btn.expand-all {
+  color: #fff;
+  border-color: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.07);
+}
+.ctrl-btn.expand-all:hover {
+  background: rgba(255,255,255,0.13);
+  border-color: rgba(255,255,255,0.45);
+}
+
+/* ── TABLE WRAPPER ── */
+.table-scroll { max-width:1720px; margin:0 auto; overflow-x:auto; border-radius:12px; border:1px solid var(--border); }
+table { width:100%; min-width:900px; border-collapse:collapse; }
+
+/* ── BRAND GROUP HEADERS ── */
+.col-group-head { background:#0C0C12; border-bottom:1px solid var(--border); }
+.col-group-head th { padding:10px 12px; font-size:10px; font-family:'DM Mono',monospace; letter-spacing:0.13em; text-transform:uppercase; font-weight:500; border-right:1px solid var(--border); white-space:nowrap; text-align:center; cursor:pointer; user-select:none; transition:filter 0.15s; }
+.col-group-head th:first-child { text-align:left; cursor:default; }
+.col-group-head th:last-child { border-right:none; }
+.col-group-head th:not(:first-child):hover { filter: brightness(1.18); }
+.cg-task   { color:var(--muted); }
+.cg-claude { color:var(--c2); background:rgba(212,146,74,.06); border-top:2px solid rgba(212,146,74,.40); }
+.cg-gpt    { color:var(--g2); background:rgba(38,184,220,.05); border-top:2px solid rgba(38,184,220,.40); }
+.cg-gem    { color:var(--e2); background:rgba(40,191,110,.05); border-top:2px solid rgba(40,191,110,.40); }
+.cg-cop    { color:var(--p2); background:rgba(79,143,230,.05); border-top:2px solid rgba(79,143,230,.40); }
+.cg-grk    { color:var(--k2); background:rgba(155,85,224,.05); border-top:2px solid rgba(155,85,224,.40); }
+
+/* brand header inner layout */
+.brand-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+.brand-header-inner .brand-name { flex: 1; text-align: center; }
+.toggle-col-btn {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 6px;
+  transition: all 0.15s;
+  font-family: 'DM Mono', monospace;
+}
+.toggle-col-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.35);
+  color: #fff;
+}
+
+/* Collapsed brand group header */
+.brand-collapsed-header {
+  min-width: 48px !important;
+  width: 48px !important;
+  padding: 8px 4px !important;
+}
+.brand-collapsed-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+}
+.brand-collapsed-name {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.expand-col-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 3px;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  padding: 2px 5px;
+  transition: all 0.15s;
+  font-family: 'DM Mono', monospace;
+}
+.expand-col-btn:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.4);
+  color: #fff;
+}
+
+/* First sub-column stub when brand collapsed */
+.col-stub {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  padding: 0 !important;
+  border-right: 1px solid var(--border) !important;
+  overflow: hidden;
+}
+
+/* Hidden cells for 2nd and 3rd sub-columns when brand collapsed */
+.col-hidden {
+  display: none !important;
+}
+
+/* ── SUB-HEADERS ── */
+thead tr.sub-head th { background:#0F0F16; padding:9px 12px; font-size:10px; font-family:'DM Mono',monospace; letter-spacing:0.08em; text-transform:uppercase; font-weight:500; border-bottom:1px solid var(--border); border-right:1px solid var(--border); white-space:nowrap; }
+thead tr.sub-head th:last-child { border-right:none; }
+.sh-c1{color:var(--c1)!important;} .sh-c2{color:var(--c2)!important;} .sh-c3{color:var(--c3)!important;}
+.sh-g1{color:var(--g1)!important;} .sh-g2{color:var(--g2)!important;} .sh-g3{color:var(--g3)!important;}
+.sh-e1{color:var(--e1)!important;} .sh-e2{color:var(--e2)!important;} .sh-e3{color:var(--e3)!important;}
+.sh-p1{color:var(--p1)!important;} .sh-p2{color:var(--p2)!important;} .sh-p3{color:var(--p3)!important;}
+.sh-k1{color:var(--k1)!important;} .sh-k2{color:var(--k2)!important;} .sh-k3{color:var(--k3)!important;}
+
+/* ── SECTION ROWS ── */
+tr.section-row td { background:#0C0C11; padding:7px 14px; border-bottom:1px solid var(--border); cursor:pointer; user-select:none; transition:background 0.15s; }
+tr.section-row:hover td { background:#101018; }
+.section-header-inner { display:flex; align-items:center; justify-content:space-between; width:100%; }
+.section-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted2); }
+.section-count { font-family:'DM Mono',monospace; font-size:9px; color:var(--muted2); opacity:0; transition:opacity 0.15s; margin-left:8px; }
+tr.section-row.is-collapsed .section-count { opacity:1; }
+.toggle-section-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 4px;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 7px;
+  font-family: 'DM Mono', monospace;
+  transition: all 0.15s;
+}
+tr.section-row:hover .toggle-section-btn {
+  border-color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.6);
+}
+.toggle-section-btn.is-collapsed { transform: rotate(-90deg); }
+
+/* ── DATA ROWS ── */
+tbody tr.data-row { background:var(--surface); border-bottom:1px solid var(--border); transition:opacity 0.15s; }
+tbody tr.data-row:last-child { border-bottom:none; }
+tbody tr.data-row:hover { filter:brightness(1.06); }
+tbody tr.data-row td { padding:12px 11px; vertical-align:top; border-right:1px solid var(--border); font-size:13px; line-height:1.5; }
+tbody tr.data-row td:last-child { border-right:none; }
+tbody tr.row-hidden { display:none !important; }
+
+/* ── TASK CELL ── */
+.task-cell { width:118px; min-width:108px; }
+.task-name { font-size:13px; font-weight:700; display:block; margin-bottom:3px; }
+.task-sub  { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); }
+
+/* ── BRAND COLUMN TINTS ── */
+.bc1{background:rgba(212,146,74,.055);} .bc2{background:rgba(242,184,106,.065);} .bc3{background:rgba(255,207,133,.055);}
+.bg1{background:rgba(38,184,220,.045);} .bg2{background:rgba(93,210,239,.055);} .bg3{background:rgba(157,232,250,.045);}
+.be1{background:rgba(40,191,110,.045);} .be2{background:rgba(93,217,154,.055);} .be3{background:rgba(151,239,190,.045);}
+.bp1{background:rgba(79,143,230,.045);} .bp2{background:rgba(110,176,255,.055);} .bp3{background:rgba(164,204,255,.045);}
+.bk1{background:rgba(155,85,224,.045);} .bk2{background:rgba(184,125,255,.055);} .bk3{background:rgba(212,170,255,.045);}
+.model-cell { width:100px; min-width:92px; vertical-align:top; }
+
+/* ── ANSWER BADGES ── */
+.ans { display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:5px; border-width:1px; border-style:solid; font-family:'DM Mono',monospace; font-size:10px; font-weight:600; margin-bottom:7px; white-space:nowrap; }
+.t-cheap{border-color:var(--tier-cheap);} .t-mid{border-color:var(--tier-mid);} .t-heavy{border-color:var(--tier-heavy);}
+.ab-c1{color:var(--c1);background:rgba(212,146,74,.11);}  .ab-c2{color:var(--c2);background:rgba(242,184,106,.11);} .ab-c3{color:var(--c3);background:rgba(255,207,133,.11);}
+.ab-g1{color:var(--g1);background:rgba(38,184,220,.10);}  .ab-g2{color:var(--g2);background:rgba(93,210,239,.10);}  .ab-g3{color:var(--g3);background:rgba(157,232,250,.10);}
+.ab-e1{color:var(--e1);background:rgba(40,191,110,.10);}  .ab-e2{color:var(--e2);background:rgba(93,217,154,.10);}  .ab-e3{color:var(--e3);background:rgba(151,239,190,.10);}
+.ab-p1{color:var(--p1);background:rgba(79,143,230,.10);}  .ab-p2{color:var(--p2);background:rgba(110,176,255,.10);} .ab-p3{color:var(--p3);background:rgba(164,204,255,.10);}
+.ab-k1{color:var(--k1);background:rgba(155,85,224,.10);}  .ab-k2{color:var(--k2);background:rgba(184,125,255,.10);} .ab-k3{color:var(--k3);background:rgba(212,170,255,.10);}
+
+/* ── MODEL PICK BORDERS ── */
+.pick-c1{box-shadow:inset 0 0 0 2px var(--c1), 0 0 8px rgba(212,146,74,.22);}
+.pick-c2{box-shadow:inset 0 0 0 2px var(--c2), 0 0 9px rgba(242,184,106,.25);}
+.pick-c3{box-shadow:inset 0 0 0 2px var(--c3), 0 0 9px rgba(255,207,133,.25);}
+.pick-g1{box-shadow:inset 0 0 0 2px var(--g1), 0 0 8px rgba(38,184,220,.22);}
+.pick-g2{box-shadow:inset 0 0 0 2px var(--g2), 0 0 9px rgba(93,210,239,.25);}
+.pick-g3{box-shadow:inset 0 0 0 2px var(--g3), 0 0 9px rgba(157,232,250,.25);}
+.pick-e1{box-shadow:inset 0 0 0 2px var(--e1), 0 0 8px rgba(40,191,110,.22);}
+.pick-e2{box-shadow:inset 0 0 0 2px var(--e2), 0 0 9px rgba(93,217,154,.25);}
+.pick-e3{box-shadow:inset 0 0 0 2px var(--e3), 0 0 9px rgba(151,239,190,.25);}
+.pick-p1{box-shadow:inset 0 0 0 2px var(--p1), 0 0 8px rgba(79,143,230,.22);}
+.pick-p2{box-shadow:inset 0 0 0 2px var(--p2), 0 0 9px rgba(110,176,255,.25);}
+.pick-p3{box-shadow:inset 0 0 0 2px var(--p3), 0 0 9px rgba(164,204,255,.25);}
+.pick-k1{box-shadow:inset 0 0 0 2px var(--k1), 0 0 8px rgba(155,85,224,.22);}
+.pick-k2{box-shadow:inset 0 0 0 2px var(--k2), 0 0 9px rgba(184,125,255,.25);}
+.pick-k3{box-shadow:inset 0 0 0 2px var(--k3), 0 0 9px rgba(212,170,255,.25);}
+
+/* ── OVERALL BEST PICK ── */
+.best-pick {
+  box-shadow:
+    inset 0 0 0 3px #ffffff,
+    inset 0 0 0 6px rgba(255,255,255,0.12),
+    0 0 16px rgba(255,255,255,0.22) !important;
+  position: relative;
+  z-index: 1;
+}
+.best-pick::after {
+  content: "BEST";
+  position: absolute;
+  top: 5px; right: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #fff;
+  opacity: 0.55;
+}
+
+.model-note { font-size:11px; color:var(--muted); line-height:1.45; }
+[class*="pick-c"] .model-note{color:rgba(242,184,106,.72);}
+[class*="pick-g"] .model-note{color:rgba(93,210,239,.72);}
+[class*="pick-e"] .model-note{color:rgba(93,217,154,.72);}
+[class*="pick-p"] .model-note{color:rgba(110,176,255,.72);}
+[class*="pick-k"] .model-note{color:rgba(184,125,255,.72);}
+
+/* ── FOOTNOTE ── */
+.footnote { max-width:1720px; margin:18px auto 0; display:flex; gap:18px; flex-wrap:wrap; }
+.fn-item { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); display:flex; align-items:center; gap:6px; }
+.fn-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Platform Comparison / Model Selection Reference — Updated March 2026</p>
+  <h1>Right model. Right task.<br>Five platforms.</h1>
+  <p class="subtitle">Models listed cheapest-first within each brand. White double border marks the overall best pick for that task across all platforms.</p>
+
+  <div class="brand-row">
+    <div class="brand-group">
+      <span class="brand-title" style="color:var(--c2)">Claude (Anthropic)</span>
+      <div class="brand-pills">
+        <span class="pill lp-c1"><span class="pip" style="background:var(--c1)"></span>Haiku 4.5</span>
+        <span class="pill lp-c2"><span class="pip" style="background:var(--c2)"></span>Sonnet 4.6</span>
+        <span class="pill lp-c3"><span class="pip" style="background:var(--c3)"></span>Opus 4.6</span>
+      </div>
+    </div>
+    <div class="brand-group">
+      <span class="brand-title" style="color:var(--g2)">ChatGPT (OpenAI)</span>
+      <div class="brand-pills">
+        <span class="pill lp-g1"><span class="pip" style="background:var(--g1)"></span>Mini / Fast</span>
+        <span class="pill lp-g2"><span class="pip" style="background:var(--g2)"></span>Standard</span>
+        <span class="pill lp-g3"><span class="pip" style="background:var(--g3)"></span>Thinking</span>
+      </div>
+    </div>
+    <div class="brand-group">
+      <span class="brand-title" style="color:var(--e2)">Gemini (Google)</span>
+      <div class="brand-pills">
+        <span class="pill lp-e1"><span class="pip" style="background:var(--e1)"></span>Flash-Lite</span>
+        <span class="pill lp-e2"><span class="pip" style="background:var(--e2)"></span>2.5 Flash</span>
+        <span class="pill lp-e3"><span class="pip" style="background:var(--e3)"></span>2.5 Pro</span>
+      </div>
+    </div>
+    <div class="brand-group">
+      <span class="brand-title" style="color:var(--p2)">Copilot (Microsoft)</span>
+      <div class="brand-pills">
+        <span class="pill lp-p1"><span class="pip" style="background:var(--p1)"></span>Quick Response</span>
+        <span class="pill lp-p2"><span class="pip" style="background:var(--p2)"></span>Smart (GPT-5)</span>
+        <span class="pill lp-p3"><span class="pip" style="background:var(--p3)"></span>Think Deeper</span>
+      </div>
+    </div>
+    <div class="brand-group">
+      <span class="brand-title" style="color:var(--k2)">Grok (xAI)</span>
+      <div class="brand-pills">
+        <span class="pill lp-k1"><span class="pip" style="background:var(--k1)"></span>Grok 4 Fast</span>
+        <span class="pill lp-k2"><span class="pip" style="background:var(--k2)"></span>Grok 4</span>
+        <span class="pill lp-k3"><span class="pip" style="background:var(--k3)"></span>Grok 4 Heavy</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-key">
+    <span class="tier-key-label">Badge border:</span>
+    <span class="tier-swatch ts-cheap">Cheapest model</span>
+    <span class="tier-swatch ts-mid">Mid model</span>
+    <span class="tier-swatch ts-heavy">Expensive model</span>
+    <span class="tier-key-label" style="margin-left:8px">Cell border:</span>
+    <span class="tier-swatch" style="color:var(--c2);border-color:var(--c2);background:rgba(242,184,106,.06);">Brand pick</span>
+    <span class="tier-swatch ts-best">Overall best</span>
+    <span class="ts-note">&nbsp;&nbsp;Overall best = thick white border + BEST label</span>
+  </div>
+</header>
+
+<!-- Controls bar -->
+<div class="controls-bar">
+  <button class="ctrl-btn expand-all" id="expand-all-btn">↕ Expand All</button>
+  <span class="controls-label" style="margin-left:4px;">Toggle columns:</span>
+  <button class="ctrl-btn brand-toggle-btn" data-brand="claude" style="color:var(--c2); border-color:rgba(212,146,74,.35);">Claude</button>
+  <button class="ctrl-btn brand-toggle-btn" data-brand="gpt" style="color:var(--g2); border-color:rgba(38,184,220,.35);">ChatGPT</button>
+  <button class="ctrl-btn brand-toggle-btn" data-brand="gem" style="color:var(--e2); border-color:rgba(40,191,110,.35);">Gemini</button>
+  <button class="ctrl-btn brand-toggle-btn" data-brand="cop" style="color:var(--p2); border-color:rgba(79,143,230,.35);">Copilot</button>
+  <button class="ctrl-btn brand-toggle-btn" data-brand="grk" style="color:var(--k2); border-color:rgba(155,85,224,.35);">Grok</button>
+</div>
+
+<div class="table-scroll">
+<table>
+  <thead>
+    <tr class="col-group-head">
+      <th class="cg-task" rowspan="2" style="vertical-align:middle;width:118px;">Task</th>
+      <th colspan="3" class="cg-claude" data-brand="claude">
+        <div class="brand-header-inner">
+          <span class="brand-name">Claude (Anthropic)</span>
+          <button class="toggle-col-btn" title="Collapse Claude columns" aria-label="Toggle Claude columns">▾</button>
+        </div>
+      </th>
+      <th colspan="3" class="cg-gpt" data-brand="gpt">
+        <div class="brand-header-inner">
+          <span class="brand-name">ChatGPT (OpenAI)</span>
+          <button class="toggle-col-btn" title="Collapse ChatGPT columns" aria-label="Toggle ChatGPT columns">▾</button>
+        </div>
+      </th>
+      <th colspan="3" class="cg-gem" data-brand="gem">
+        <div class="brand-header-inner">
+          <span class="brand-name">Gemini (Google)</span>
+          <button class="toggle-col-btn" title="Collapse Gemini columns" aria-label="Toggle Gemini columns">▾</button>
+        </div>
+      </th>
+      <th colspan="3" class="cg-cop" data-brand="cop">
+        <div class="brand-header-inner">
+          <span class="brand-name">Copilot (Microsoft)</span>
+          <button class="toggle-col-btn" title="Collapse Copilot columns" aria-label="Toggle Copilot columns">▾</button>
+        </div>
+      </th>
+      <th colspan="3" class="cg-grk" data-brand="grk">
+        <div class="brand-header-inner">
+          <span class="brand-name">Grok (xAI)</span>
+          <button class="toggle-col-btn" title="Collapse Grok columns" aria-label="Toggle Grok columns">▾</button>
+        </div>
+      </th>
+    </tr>
+    <tr class="sub-head">
+      <th class="sh-c1" data-brand-sub="claude" data-sub-idx="0">Haiku 4.5<br><span style="font-size:9px;opacity:.5">Lightest</span></th>
+      <th class="sh-c2" data-brand-sub="claude" data-sub-idx="1">Sonnet 4.6<br><span style="font-size:9px;opacity:.5">Balanced</span></th>
+      <th class="sh-c3" data-brand-sub="claude" data-sub-idx="2">Opus 4.6<br><span style="font-size:9px;opacity:.5">Heaviest</span></th>
+      <th class="sh-g1" data-brand-sub="gpt" data-sub-idx="0">Mini / Fast<br><span style="font-size:9px;opacity:.5">Lightest</span></th>
+      <th class="sh-g2" data-brand-sub="gpt" data-sub-idx="1">Standard<br><span style="font-size:9px;opacity:.5">Balanced</span></th>
+      <th class="sh-g3" data-brand-sub="gpt" data-sub-idx="2">Thinking<br><span style="font-size:9px;opacity:.5">Heaviest</span></th>
+      <th class="sh-e1" data-brand-sub="gem" data-sub-idx="0">Flash-Lite<br><span style="font-size:9px;opacity:.5">Cheapest</span></th>
+      <th class="sh-e2" data-brand-sub="gem" data-sub-idx="1">2.5 Flash<br><span style="font-size:9px;opacity:.5">Balanced</span></th>
+      <th class="sh-e3" data-brand-sub="gem" data-sub-idx="2">2.5 Pro<br><span style="font-size:9px;opacity:.5">Heaviest</span></th>
+      <th class="sh-p1" data-brand-sub="cop" data-sub-idx="0">Quick Resp.<br><span style="font-size:9px;opacity:.5">Fast</span></th>
+      <th class="sh-p2" data-brand-sub="cop" data-sub-idx="1">Smart<br><span style="font-size:9px;opacity:.5">Balanced</span></th>
+      <th class="sh-p3" data-brand-sub="cop" data-sub-idx="2">Think Deeper<br><span style="font-size:9px;opacity:.5">Heaviest</span></th>
+      <th class="sh-k1" data-brand-sub="grk" data-sub-idx="0">Grok 4 Fast<br><span style="font-size:9px;opacity:.5">Cheapest</span></th>
+      <th class="sh-k2" data-brand-sub="grk" data-sub-idx="1">Grok 4<br><span style="font-size:9px;opacity:.5">Balanced</span></th>
+      <th class="sh-k3" data-brand-sub="grk" data-sub-idx="2">Grok 4 Heavy<br><span style="font-size:9px;opacity:.5">Heaviest</span></th>
+    </tr>
+  </thead>
+  <tbody>
+
+<!-- ===== CODING ===== -->
+<tr class="section-row" data-section="coding">
+  <td colspan="16">
+    <div class="section-header-inner">
+      <span class="section-label">Coding</span>
+      <span class="section-count"></span>
+      <button class="toggle-section-btn" aria-label="Toggle Coding section">▾</button>
+    </div>
+  </td>
+</tr>
+
+<tr class="data-row" data-section="coding">
+  <td class="task-cell"><span class="task-name">Quick code check</span><span class="task-sub">Debug / syntax / review</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Misses subtle logic faults</p></td>
+  <td class="model-cell bc2 pick-c2 best-pick" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Catches logic errors; explains fixes clearly at mid cost</p></td>
+  <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">Overkill for spot checks</p></td>
+  <td class="model-cell bg1 pick-g1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">o4-mini ★</span><p class="model-note">Fast reasoning; solid for syntax and quick logic</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Skip</span><p class="model-note">More than needed</p></td>
+  <td class="model-cell bg3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Skip</span><p class="model-note">Reserved for architecture</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Skip</span><p class="model-note">Flash handles this better</p></td>
+  <td class="model-cell be2 pick-e2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Flash ★</span><p class="model-note">Good code review reasoning at low cost</p></td>
+  <td class="model-cell be3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">Skip</span><p class="model-note">Overkill</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Too surface-level for code review</p></td>
+  <td class="model-cell bp2 pick-p2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Smart ★</span><p class="model-note">GPT-5 routing; handles syntax review inside M365 context</p></td>
+  <td class="model-cell bp3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Skip</span><p class="model-note">Overkill for spot checks</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Fallback</span><p class="model-note">Capable at low cost; slightly less precise than Sonnet</p></td>
+  <td class="model-cell bk2 pick-k2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Grok 4 ★</span><p class="model-note">Strong code comprehension; real-time context via X search</p></td>
+  <td class="model-cell bk3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Skip</span><p class="model-note">Heavy is overkill for quick checks</p></td>
+</tr>
+
+<tr class="data-row" data-section="coding">
+  <td class="task-cell"><span class="task-name">Full app build</span><span class="task-sub">Multi-file, architecture</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Loses coherence across files</p></td>
+  <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Good for scoped modules; not full architecture</p></td>
+  <td class="model-cell bc3 pick-c3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Best-in-class for multi-file consistency</p></td>
+  <td class="model-cell bg1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Skip</span><p class="model-note">Not suited for large context</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Fallback</span><p class="model-note">Solid but thins on complex architecture</p></td>
+  <td class="model-cell bg3 pick-g3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Thinking ★</span><p class="model-note">Handles multi-file logic and architecture planning</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Skip</span><p class="model-note">Wrong tier</p></td>
+  <td class="model-cell be2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Fallback</span><p class="model-note">Good value; may need re-prompting on deep logic</p></td>
+  <td class="model-cell be3 pick-e3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">2.5 Pro ★</span><p class="model-note">Strong on large codebases; 1M token context</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Not suited for this</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Fallback</span><p class="model-note">Handles scoped builds; weaker on full architecture</p></td>
+  <td class="model-cell bp3 pick-p3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Think Deeper ★</span><p class="model-note">Multi-step reasoning via o1; good for architecture planning in M365 context</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Skip</span><p class="model-note">Fast model not suited here</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Fallback</span><p class="model-note">Capable but lacks long-horizon file coherence</p></td>
+  <td class="model-cell bk3 pick-k3 best-pick" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Heavy ★</span><p class="model-note">Multi-agent system; top coding benchmarks; suited for complex builds</p></td>
+</tr>
+
+<tr class="data-row" data-section="coding">
+  <td class="task-cell"><span class="task-name">Full web build</span><span class="task-sub">HTML / CSS / JS / layout</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not reliable for responsive builds</p></td>
+  <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Good for isolated components</p></td>
+  <td class="model-cell bc3 pick-c3 best-pick" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Handles CSS, semantics, responsiveness, and accessibility together best</p></td>
+  <td class="model-cell bg1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Skip</span><p class="model-note">Too lightweight</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Fallback</span><p class="model-note">Reasonable for scoped front-end work</p></td>
+  <td class="model-cell bg3 pick-g3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Thinking ★</span><p class="model-note">Integrates front/back-end well</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Skip</span><p class="model-note">Too lightweight</p></td>
+  <td class="model-cell be2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Fallback</span><p class="model-note">Capable, especially front-end generation</p></td>
+  <td class="model-cell be3 pick-e3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">2.5 Pro ★</span><p class="model-note">Strong at visual web apps; excellent CSS reasoning</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Not suited</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Fallback</span><p class="model-note">Handles component-level work</p></td>
+  <td class="model-cell bp3 pick-p3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Think Deeper ★</span><p class="model-note">Good for full-stack structure and UI reasoning chains</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Skip</span><p class="model-note">Not suited</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Fallback</span><p class="model-note">Capable but less holistic on CSS and accessibility</p></td>
+  <td class="model-cell bk3 pick-k3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Heavy ★</span><p class="model-note">Strong full-stack reasoning; competitive with Opus here</p></td>
+</tr>
+
+<!-- ===== WRITING ===== -->
+<tr class="section-row" data-section="writing">
+  <td colspan="16">
+    <div class="section-header-inner">
+      <span class="section-label">Writing</span>
+      <span class="section-count"></span>
+      <button class="toggle-section-btn" aria-label="Toggle Writing section">▾</button>
+    </div>
+  </td>
+</tr>
+
+<tr class="data-row" data-section="writing">
+  <td class="task-cell"><span class="task-name">Quick social posts</span><span class="task-sub">Short copy, captions</span></td>
+  <td class="model-cell bc1 pick-c1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Haiku ★</span><p class="model-note">Fast, capable, no wasted quota</p></td>
+  <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Skip</span><p class="model-note">More than needed</p></td>
+  <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">Wasteful</p></td>
+  <td class="model-cell bg1 pick-g1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Fast ★</span><p class="model-note">Speed over depth; handles short-form well</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Skip</span><p class="model-note">Overkill</p></td>
+  <td class="model-cell bg3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Skip</span><p class="model-note">Unnecessary</p></td>
+  <td class="model-cell be1 pick-e1 best-pick" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Flash-Lite ★</span><p class="model-note">Lowest cost of any option; fully sufficient for captions and short copy</p></td>
+  <td class="model-cell be2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Skip</span><p class="model-note">Spends more than needed</p></td>
+  <td class="model-cell be3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">Skip</span><p class="model-note">Never use Pro for captions</p></td>
+  <td class="model-cell bp1 pick-p1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Quick Resp. ★</span><p class="model-note">Instantaneous; good for simple social copy drafts</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Skip</span><p class="model-note">Overkill for captions</p></td>
+  <td class="model-cell bp3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Skip</span><p class="model-note">Never needed here</p></td>
+  <td class="model-cell bk1 pick-k1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">4 Fast ★</span><p class="model-note">Very low cost; capable for short-form output</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Skip</span><p class="model-note">Overkill</p></td>
+  <td class="model-cell bk3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Skip</span><p class="model-note">Never appropriate here</p></td>
+</tr>
+
+<tr class="data-row" data-section="writing">
+  <td class="task-cell"><span class="task-name">Long-form blog</span><span class="task-sub">1,000–3,000+ words</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Loses voice over length</p></td>
+  <td class="model-cell bc2 pick-c2 best-pick" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Best voice-matching and narrative consistency of any platform at mid cost</p></td>
+  <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Upgrade if</span><p class="model-note">Only when post requires expert synthesis</p></td>
+  <td class="model-cell bg1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Skip</span><p class="model-note">Not reliable long-form</p></td>
+  <td class="model-cell bg2 pick-g2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Standard ★</span><p class="model-note">Maintains tone and flow over 2,000+ words</p></td>
+  <td class="model-cell bg3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Skip</span><p class="model-note">Reserved for research-heavy writing</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Skip</span><p class="model-note">Loses coherence</p></td>
+  <td class="model-cell be2 pick-e2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Flash ★</span><p class="model-note">Reasonable; outputs tend verbose, edit after</p></td>
+  <td class="model-cell be3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">Upgrade if</span><p class="model-note">Deep research synthesis in the same pass</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Too shallow for structured long-form</p></td>
+  <td class="model-cell bp2 pick-p2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Smart ★</span><p class="model-note">GPT-5 routing handles long-form well; good if you're already in M365</p></td>
+  <td class="model-cell bp3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Skip</span><p class="model-note">Reserved for research-dense writing</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Skip</span><p class="model-note">Fast model not suited for long-form</p></td>
+  <td class="model-cell bk2 pick-k2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Grok 4 ★</span><p class="model-note">Solid long-form; real-time data helps with topical freshness</p></td>
+  <td class="model-cell bk3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Skip</span><p class="model-note">Overkill for blogging</p></td>
+</tr>
+
+<!-- ===== RESEARCH ===== -->
+<tr class="section-row" data-section="research">
+  <td colspan="16">
+    <div class="section-header-inner">
+      <span class="section-label">Research and Strategy</span>
+      <span class="section-count"></span>
+      <button class="toggle-section-btn" aria-label="Toggle Research section">▾</button>
+    </div>
+  </td>
+</tr>
+
+<tr class="data-row" data-section="research">
+  <td class="task-cell"><span class="task-name">Article research</span><span class="task-sub">Source synthesis, fact-finding</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not built for source synthesis</p></td>
+  <td class="model-cell bc2 pick-c2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Solid with web search enabled; identifies gaps well</p></td>
+  <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Upgrade if</span><p class="model-note">High-stakes accuracy required</p></td>
+  <td class="model-cell bg1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Skip</span><p class="model-note">Too lightweight</p></td>
+  <td class="model-cell bg2 pick-g2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Standard ★</span><p class="model-note">Strong synthesis; Deep Research mode helps</p></td>
+  <td class="model-cell bg3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Upgrade if</span><p class="model-note">Research feeds strategic decision-making</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Skip</span><p class="model-note">Not appropriate for research depth</p></td>
+  <td class="model-cell be2 pick-e2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Flash ★</span><p class="model-note">Google Search grounding; efficient fact-finding</p></td>
+  <td class="model-cell be3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">Upgrade if</span><p class="model-note">Academic or complex cross-reference synthesis</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Too shallow for research</p></td>
+  <td class="model-cell bp2 pick-p2 best-pick" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Smart ★</span><p class="model-note">Search mode + Microsoft Graph grounding; best-in-class for enterprise research synthesis</p></td>
+  <td class="model-cell bp3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Upgrade if</span><p class="model-note">Multi-doc synthesis requiring deep inferential reasoning</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Skip</span><p class="model-note">Not suited for research depth</p></td>
+  <td class="model-cell bk2 pick-k2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Grok 4 ★</span><p class="model-note">Real-time X and web data; strong for current events research</p></td>
+  <td class="model-cell bk3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Upgrade if</span><p class="model-note">Complex multi-source synthesis under time pressure</p></td>
+</tr>
+
+<tr class="data-row" data-section="research">
+  <td class="task-cell"><span class="task-name">Prompt engineering</span><span class="task-sub">Build prompts for AI tools</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Lacks meta-reasoning</p></td>
+  <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Works for simpler prompts; misses edge cases</p></td>
+  <td class="model-cell bc3 pick-c3 best-pick" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Reasons about model behavior; catches failure modes — best meta-reasoning of any platform</p></td>
+  <td class="model-cell bg1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell bg2 pick-g2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Standard ★</span><p class="model-note">Precise instruction building; strong here</p></td>
+  <td class="model-cell bg3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Upgrade if</span><p class="model-note">Prompt runs in agentic workflows</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Skip</span><p class="model-note">Wrong tier</p></td>
+  <td class="model-cell be2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Fallback</span><p class="model-note">Adequate for basic construction</p></td>
+  <td class="model-cell be3 pick-e3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">2.5 Pro ★</span><p class="model-note">Deep Think applies step-by-step reasoning to prompt logic</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Not suited</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Fallback</span><p class="model-note">Handles basic prompt drafting</p></td>
+  <td class="model-cell bp3 pick-p3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Think Deeper ★</span><p class="model-note">Reasoning model breaks down prompt structure and failure paths</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Skip</span><p class="model-note">Not suited</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Fallback</span><p class="model-note">Decent but less precise on edge cases</p></td>
+  <td class="model-cell bk3 pick-k3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Heavy ★</span><p class="model-note">Strong multi-step reasoning on prompt design; competitive with Opus</p></td>
+</tr>
+
+<!-- ===== ADDITIONAL ===== -->
+<tr class="section-row" data-section="additional">
+  <td colspan="16">
+    <div class="section-header-inner">
+      <span class="section-label">Additional Common AI Use-Cases</span>
+      <span class="section-count"></span>
+      <button class="toggle-section-btn" aria-label="Toggle Additional section">▾</button>
+    </div>
+  </td>
+</tr>
+
+<tr class="data-row" data-section="additional">
+  <td class="task-cell"><span class="task-name">Email drafting</span><span class="task-sub">Client, internal, outreach</span></td>
+  <td class="model-cell bc1 pick-c1 best-pick" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Haiku ★</span><p class="model-note">Clean professional copy at lowest Claude cost; best overall value for routine email</p></td>
+  <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Upgrade if</span><p class="model-note">Tone-sensitive or high-stakes</p></td>
+  <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">No justification</p></td>
+  <td class="model-cell bg1 pick-g1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Fast ★</span><p class="model-note">Reliable tone control at low cost</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Upgrade if</span><p class="model-note">Complex negotiation emails</p></td>
+  <td class="model-cell bg3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Skip</span><p class="model-note">Never needed</p></td>
+  <td class="model-cell be1 pick-e1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Flash-Lite ★</span><p class="model-note">Sufficient for routine drafts at lowest cost</p></td>
+  <td class="model-cell be2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Upgrade if</span><p class="model-note">Nuanced bulk drafting</p></td>
+  <td class="model-cell be3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">Skip</span><p class="model-note">Never appropriate</p></td>
+  <td class="model-cell bp1 pick-p1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Quick Resp. ★</span><p class="model-note">Native Outlook integration; instant drafting in context</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Upgrade if</span><p class="model-note">Email requires broader context from your M365 data</p></td>
+  <td class="model-cell bp3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Skip</span><p class="model-note">Never appropriate</p></td>
+  <td class="model-cell bk1 pick-k1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">4 Fast ★</span><p class="model-note">Capable at very low cost</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Skip</span><p class="model-note">Overkill for email</p></td>
+  <td class="model-cell bk3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Skip</span><p class="model-note">Never appropriate</p></td>
+</tr>
+
+<tr class="data-row" data-section="additional">
+  <td class="task-cell"><span class="task-name">Data analysis</span><span class="task-sub">CSV, metrics, pattern-finding</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not suited for complex inference</p></td>
+  <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Surface-level pattern summaries</p></td>
+  <td class="model-cell bc3 pick-c3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Strong reasoning across ambiguous datasets</p></td>
+  <td class="model-cell bg1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Skip</span><p class="model-note">Not suited</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Fallback</span><p class="model-note">Structured summaries and basic interpretation</p></td>
+  <td class="model-cell bg3 pick-g3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Thinking ★</span><p class="model-note">Handles large CSVs and multi-step interpretation</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell be2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Fallback</span><p class="model-note">Reasonable structured summaries</p></td>
+  <td class="model-cell be3 pick-e3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">2.5 Pro ★</span><p class="model-note">Excellent for large datasets; handles visualizations</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Not suited</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Fallback</span><p class="model-note">Useful when data lives in Excel via M365</p></td>
+  <td class="model-cell bp3 pick-p3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Think Deeper ★</span><p class="model-note">Native Excel integration + deep reasoning; strong for business data</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Skip</span><p class="model-note">Not suited</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Fallback</span><p class="model-note">Capable but less precise on ambiguous data</p></td>
+  <td class="model-cell bk3 pick-k3 best-pick" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Heavy ★</span><p class="model-note">Top benchmark reasoning; multi-agent handles complex multi-dataset inference best</p></td>
+</tr>
+
+<tr class="data-row" data-section="additional">
+  <td class="task-cell"><span class="task-name">Document summary</span><span class="task-sub">PDFs, contracts, reports</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Misses nuance in dense docs</p></td>
+  <td class="model-cell bc2 pick-c2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Reliable structure extraction; good context handling</p></td>
+  <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Upgrade if</span><p class="model-note">Legal docs requiring inferential judgment</p></td>
+  <td class="model-cell bg1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Skip</span><p class="model-note">Not suited</p></td>
+  <td class="model-cell bg2 pick-g2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Standard ★</span><p class="model-note">Strong at pulling key points from long documents</p></td>
+  <td class="model-cell bg3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Upgrade if</span><p class="model-note">Legal interpretation required</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Fallback</span><p class="model-note">Straightforward docs at very low cost</p></td>
+  <td class="model-cell be2 pick-e2 best-pick" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Flash ★</span><p class="model-note">1M token context window built for this; best value for document-scale summarization</p></td>
+  <td class="model-cell be3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">Upgrade if</span><p class="model-note">Complex multi-document synthesis</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Not suited</p></td>
+  <td class="model-cell bp2 pick-p2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Smart ★</span><p class="model-note">Native Word/SharePoint integration; pulls from your actual org docs</p></td>
+  <td class="model-cell bp3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Upgrade if</span><p class="model-note">Synthesis requires strategic interpretation</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Skip</span><p class="model-note">Context window too small for large documents</p></td>
+  <td class="model-cell bk2 pick-k2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Grok 4 ★</span><p class="model-note">2M token context; can handle extremely long documents</p></td>
+  <td class="model-cell bk3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Upgrade if</span><p class="model-note">Multi-doc analysis under strict accuracy requirements</p></td>
+</tr>
+
+<tr class="data-row" data-section="additional">
+  <td class="task-cell"><span class="task-name">Brainstorming</span><span class="task-sub">Ideas, concepts, angles</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Fallback</span><p class="model-note">Simple brainstorms; ideas repeat faster</p></td>
+  <td class="model-cell bc2 pick-c2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Better variety, fewer clichés</p></td>
+  <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">Depth over breadth not what brainstorming needs</p></td>
+  <td class="model-cell bg1 pick-g1 best-pick" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Fast ★</span><p class="model-note">Rapid-fire generation; highest idea variety at lowest cost — best overall for brainstorming</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Upgrade if</span><p class="model-note">Strategic framing needed in the ideas</p></td>
+  <td class="model-cell bg3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Skip</span><p class="model-note">Overthinks ideation</p></td>
+  <td class="model-cell be1 pick-e1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Flash-Lite ★</span><p class="model-note">Fast, low-cost; solid for agendas and concept lists</p></td>
+  <td class="model-cell be2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Upgrade if</span><p class="model-note">Brainstorm needs research integration</p></td>
+  <td class="model-cell be3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">Skip</span><p class="model-note">Overkill</p></td>
+  <td class="model-cell bp1 pick-p1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Quick Resp. ★</span><p class="model-note">Fast ideation; M365 context helps for work-specific brainstorming</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Upgrade if</span><p class="model-note">Ideas need to draw on your org's documents or data</p></td>
+  <td class="model-cell bp3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Skip</span><p class="model-note">Overthinks it</p></td>
+  <td class="model-cell bk1 pick-k1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">4 Fast ★</span><p class="model-note">Real-time X data helps with trend-based ideation</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Skip</span><p class="model-note">Overkill for ideation</p></td>
+  <td class="model-cell bk3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Skip</span><p class="model-note">Never appropriate here</p></td>
+</tr>
+
+<tr class="data-row" data-section="additional">
+  <td class="task-cell"><span class="task-name">SEO and metadata</span><span class="task-sub">Title tags, meta, alt text</span></td>
+  <td class="model-cell bc1 pick-c1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Haiku ★</span><p class="model-note">Character-constrained rules are a perfect Haiku fit</p></td>
+  <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Skip</span><p class="model-note">Unnecessary</p></td>
+  <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">Never use Opus for metadata</p></td>
+  <td class="model-cell bg1 pick-g1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Fast ★</span><p class="model-note">High volume, low complexity; handles SEO at scale</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Skip</span><p class="model-note">Not needed</p></td>
+  <td class="model-cell bg3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Skip</span><p class="model-note">Wasteful</p></td>
+  <td class="model-cell be1 pick-e1 best-pick" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Flash-Lite ★</span><p class="model-note">Lowest cost of any platform; fully capable for structured metadata output at scale</p></td>
+  <td class="model-cell be2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Skip</span><p class="model-note">Overkill</p></td>
+  <td class="model-cell be3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">Skip</span><p class="model-note">Never appropriate</p></td>
+  <td class="model-cell bp1 pick-p1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Quick Resp. ★</span><p class="model-note">Fast and sufficient for metadata drafts</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Skip</span><p class="model-note">Not needed</p></td>
+  <td class="model-cell bp3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Skip</span><p class="model-note">Never appropriate</p></td>
+  <td class="model-cell bk1 pick-k1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">4 Fast ★</span><p class="model-note">Very low cost; capable for structured metadata output</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Skip</span><p class="model-note">Overkill</p></td>
+  <td class="model-cell bk3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Skip</span><p class="model-note">Never appropriate</p></td>
+</tr>
+
+<tr class="data-row" data-section="additional">
+  <td class="task-cell"><span class="task-name">Strategic planning</span><span class="task-sub">Business decisions, proposals</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not capable of competing variables</p></td>
+  <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Lower-stakes planning</p></td>
+  <td class="model-cell bc3 pick-c3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Excellent at risks, tradeoffs, and edge cases</p></td>
+  <td class="model-cell bg1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Fallback</span><p class="model-note">Scoped strategy questions</p></td>
+  <td class="model-cell bg3 pick-g3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Thinking ★</span><p class="model-note">Multi-step reasoning and tradeoff analysis</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell be2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Fallback</span><p class="model-note">Tactical planning; less reliable for complex risk</p></td>
+  <td class="model-cell be3 pick-e3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">2.5 Pro ★</span><p class="model-note">Deep Think excels at structured decision analysis</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Fallback</span><p class="model-note">Useful when strategy draws on your M365 org data</p></td>
+  <td class="model-cell bp3 pick-p3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Think Deeper ★</span><p class="model-note">Deep reasoning on complex business problems; strong with org context loaded</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Fallback</span><p class="model-note">Capable but less thorough on edge cases</p></td>
+  <td class="model-cell bk3 pick-k3 best-pick" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Heavy ★</span><p class="model-note">Top-tier multi-step reasoning; real-time data + benchmark tradeoff analysis — strongest overall</p></td>
+</tr>
+
+<tr class="data-row" data-section="additional">
+  <td class="task-cell"><span class="task-name">Automation workflows</span><span class="task-sub">APIs, tools, logic chains</span></td>
+  <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not suited for conditional logic at scale</p></td>
+  <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Works for simpler automations</p></td>
+  <td class="model-cell bc3 pick-c3 best-pick" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Agentic multi-step workflows are a core Opus strength; best overall for API logic chains</p></td>
+  <td class="model-cell bg1" data-brand-cell="gpt" data-cell-idx="0"><span class="ans ab-g1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell bg2" data-brand-cell="gpt" data-cell-idx="1"><span class="ans ab-g2 t-mid">Fallback</span><p class="model-note">Handles moderate automation logic</p></td>
+  <td class="model-cell bg3 pick-g3" data-brand-cell="gpt" data-cell-idx="2"><span class="ans ab-g3 t-heavy">Thinking ★</span><p class="model-note">Conditional flows, API chains, error handling</p></td>
+  <td class="model-cell be1" data-brand-cell="gem" data-cell-idx="0"><span class="ans ab-e1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell be2 pick-e2" data-brand-cell="gem" data-cell-idx="1"><span class="ans ab-e2 t-mid">Flash ★</span><p class="model-note">Good for agentic tasks; code execution built in</p></td>
+  <td class="model-cell be3" data-brand-cell="gem" data-cell-idx="2"><span class="ans ab-e3 t-heavy">Upgrade if</span><p class="model-note">Logic is deeply nested or failure is high-stakes</p></td>
+  <td class="model-cell bp1" data-brand-cell="cop" data-cell-idx="0"><span class="ans ab-p1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell bp2" data-brand-cell="cop" data-cell-idx="1"><span class="ans ab-p2 t-mid">Fallback</span><p class="model-note">Handles M365 Power Automate-style logic</p></td>
+  <td class="model-cell bp3 pick-p3" data-brand-cell="cop" data-cell-idx="2"><span class="ans ab-p3 t-heavy">Think Deeper ★</span><p class="model-note">Strong for complex M365 agent orchestration and multi-agent workflows</p></td>
+  <td class="model-cell bk1" data-brand-cell="grk" data-cell-idx="0"><span class="ans ab-k1 t-cheap">Skip</span><p class="model-note">Not appropriate</p></td>
+  <td class="model-cell bk2" data-brand-cell="grk" data-cell-idx="1"><span class="ans ab-k2 t-mid">Fallback</span><p class="model-note">Capable for API logic; less proven agentic track record</p></td>
+  <td class="model-cell bk3 pick-k3" data-brand-cell="grk" data-cell-idx="2"><span class="ans ab-k3 t-heavy">Heavy ★</span><p class="model-note">Multi-agent system suited for complex logic; competitive with Opus</p></td>
+</tr>
+
+  </tbody>
+</table>
+</div>
+
+<div class="footnote">
+  <span class="fn-item"><span class="fn-dot" style="background:var(--c2)"></span>Claude: 5-hr rolling session window. Haiku ~30% of Sonnet cost. Opus 3-5x Sonnet.</span>
+  <span class="fn-item"><span class="fn-dot" style="background:var(--g2)"></span>ChatGPT: Mini/Fast cheapest. Thinking burns quota fastest. Limits vary by Plus/Pro plan.</span>
+  <span class="fn-item"><span class="fn-dot" style="background:var(--e2)"></span>Gemini: Flash-Lite ~$0.10/M tokens. Flash ~$0.30/M. Pro ~$1.25/M. All share 1M token context.</span>
+  <span class="fn-item"><span class="fn-dot" style="background:var(--p2)"></span>Copilot: Free tier (usage caps). Copilot Business $18/mo. M365 Copilot $30/user/mo. Think Deeper = o1-style reasoning. Smart = GPT-5 auto-routing.</span>
+  <span class="fn-item"><span class="fn-dot" style="background:var(--k2)"></span>Grok: 4 Fast ~$0.20/$0.50 per M tokens. Grok 4 ~$3/$15 per M. Heavy = SuperGrok Heavy $300/mo (multi-agent, top benchmarks). 2M token context on Fast models.</span>
+  <span class="fn-item" style="color:var(--muted2)">★ = brand pick &nbsp;|&nbsp; Fallback = acceptable if pick unavailable &nbsp;|&nbsp; White border = overall best for that task</span>
+</div>
+
+<script>
+(() => {
+  // Brand definitions:
+  // groupIdx = index of the <th> in the col-group-head row (0=task, 1=claude, 2=gpt, 3=gem, 4=cop, 5=grk)
+  // subCols  = indices of <th> cells in the sub-head row (0-14)
+  // dataCols = indices of <td> cells in data rows (0=task, 1-15=brand cells)
+  const BRANDS = [
+    { id: 'claude', name: 'Claude',  groupIdx: 1, subCols: [0,1,2],   dataCols: [1,2,3]   },
+    { id: 'gpt',    name: 'ChatGPT', groupIdx: 2, subCols: [3,4,5],   dataCols: [4,5,6]   },
+    { id: 'gem',    name: 'Gemini',  groupIdx: 3, subCols: [6,7,8],   dataCols: [7,8,9]   },
+    { id: 'cop',    name: 'Copilot', groupIdx: 4, subCols: [9,10,11], dataCols: [10,11,12] },
+    { id: 'grk',    name: 'Grok',    groupIdx: 5, subCols: [12,13,14],dataCols: [13,14,15] },
+  ];
+
+  const SECTIONS = ['coding', 'writing', 'research', 'additional'];
+
+  // State
+  const brandCollapsed  = {};
+  const sectionCollapsed = {};
+  BRANDS.forEach(b => brandCollapsed[b.id] = false);
+  SECTIONS.forEach(s => sectionCollapsed[s] = false);
+
+  // ── DOM refs ──────────────────────────────────────────────────
+  const groupHeadRow = document.querySelector('tr.col-group-head');
+  const subHeadRow   = document.querySelector('tr.sub-head');
+
+  // ── BRAND TOGGLE ─────────────────────────────────────────────
+  function collapseBrand(id) {
+    const brand = BRANDS.find(b => b.id === id);
+    const groupCells = [...groupHeadRow.children];
+    const subCells   = [...subHeadRow.children];
+    const groupCell  = groupCells[brand.groupIdx];
+
+    // Save original state on first collapse
+    if (!groupCell._savedHTML) {
+      groupCell._savedHTML    = groupCell.innerHTML;
+      groupCell._savedColspan = groupCell.getAttribute('colspan') || '3';
+      groupCell._savedClass   = groupCell.className;
+    }
+
+    // Swap to collapsed header
+    groupCell.setAttribute('colspan', '1');
+    groupCell.classList.add('brand-collapsed-header');
+    groupCell.innerHTML = `
+      <div class="brand-collapsed-inner">
+        <span class="brand-collapsed-name">${brand.name}</span>
+        <button class="expand-col-btn" title="Expand ${brand.name} columns">▶</button>
+      </div>`;
+    groupCell.querySelector('.expand-col-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      expandBrand(id);
+    });
+    groupCell.addEventListener('click', () => expandBrand(id), { once: true });
+
+    // Sub-header: keep first cell as layout anchor (stub), hide 2nd and 3rd
+    const anchor = subCells[brand.subCols[0]];
+    anchor._savedHTML = anchor.innerHTML;
+    anchor._savedClass = anchor.className;
+    anchor.innerHTML  = '';
+    anchor.classList.add('col-stub');
+
+    subCells[brand.subCols[1]].classList.add('col-hidden');
+    subCells[brand.subCols[2]].classList.add('col-hidden');
+
+    // Data rows
+    document.querySelectorAll('tr.data-row').forEach(row => {
+      const cells = [...row.children];
+      const c0 = cells[brand.dataCols[0]];
+      const c1 = cells[brand.dataCols[1]];
+      const c2 = cells[brand.dataCols[2]];
+      if (c0) {
+        c0._savedHTML  = c0.innerHTML;
+        c0._savedClass = c0.className;
+        c0.innerHTML   = '';
+        c0.classList.add('col-stub');
+        // Remove pick/best-pick box-shadow temporarily
+        c0.style.boxShadow = 'none';
+        c0.style.zIndex    = '';
+      }
+      if (c1) c1.classList.add('col-hidden');
+      if (c2) c2.classList.add('col-hidden');
+    });
+
+    brandCollapsed[id] = true;
+    updateControlBtn(id, true);
+  }
+
+  function expandBrand(id) {
+    const brand = BRANDS.find(b => b.id === id);
+    const groupCells = [...groupHeadRow.children];
+    const subCells   = [...subHeadRow.children];
+    const groupCell  = groupCells[brand.groupIdx];
+
+    // Restore group header
+    groupCell.setAttribute('colspan', groupCell._savedColspan || '3');
+    groupCell.className = groupCell._savedClass || '';
+    groupCell.innerHTML = groupCell._savedHTML;
+    // Re-attach toggle button listener (it was baked into _savedHTML)
+    const btn = groupCell.querySelector('.toggle-col-btn');
+    if (btn) btn.addEventListener('click', (e) => { e.stopPropagation(); toggleBrand(id); });
+
+    // Restore sub-header anchor
+    const anchor = subCells[brand.subCols[0]];
+    anchor.innerHTML  = anchor._savedHTML || '';
+    anchor.className  = anchor._savedClass || '';
+
+    subCells[brand.subCols[1]].classList.remove('col-hidden');
+    subCells[brand.subCols[2]].classList.remove('col-hidden');
+
+    // Restore data rows
+    document.querySelectorAll('tr.data-row').forEach(row => {
+      const cells = [...row.children];
+      const c0 = cells[brand.dataCols[0]];
+      const c1 = cells[brand.dataCols[1]];
+      const c2 = cells[brand.dataCols[2]];
+      if (c0) {
+        c0.innerHTML   = c0._savedHTML || '';
+        c0.className   = c0._savedClass || '';
+        c0.style.boxShadow = '';
+        c0.style.zIndex    = '';
+      }
+      if (c1) c1.classList.remove('col-hidden');
+      if (c2) c2.classList.remove('col-hidden');
+    });
+
+    brandCollapsed[id] = false;
+    updateControlBtn(id, false);
+  }
+
+  function toggleBrand(id) {
+    if (brandCollapsed[id]) expandBrand(id);
+    else collapseBrand(id);
+  }
+
+  // ── SECTION TOGGLE ────────────────────────────────────────────
+  function collapseSection(id) {
+    const rows = document.querySelectorAll(`tr.data-row[data-section="${id}"]`);
+    rows.forEach(r => r.classList.add('row-hidden'));
+    const sectionRow = document.querySelector(`tr.section-row[data-section="${id}"]`);
+    if (sectionRow) {
+      sectionRow.classList.add('is-collapsed');
+      const btn = sectionRow.querySelector('.toggle-section-btn');
+      if (btn) btn.classList.add('is-collapsed');
+      const count = sectionRow.querySelector('.section-count');
+      if (count) count.textContent = `${rows.length} rows hidden`;
+    }
+    sectionCollapsed[id] = true;
+  }
+
+  function expandSection(id) {
+    const rows = document.querySelectorAll(`tr.data-row[data-section="${id}"]`);
+    rows.forEach(r => r.classList.remove('row-hidden'));
+    const sectionRow = document.querySelector(`tr.section-row[data-section="${id}"]`);
+    if (sectionRow) {
+      sectionRow.classList.remove('is-collapsed');
+      const btn = sectionRow.querySelector('.toggle-section-btn');
+      if (btn) btn.classList.remove('is-collapsed');
+      const count = sectionRow.querySelector('.section-count');
+      if (count) count.textContent = '';
+    }
+    sectionCollapsed[id] = false;
+  }
+
+  function toggleSection(id) {
+    if (sectionCollapsed[id]) expandSection(id);
+    else collapseSection(id);
+  }
+
+  // ── EXPAND ALL ────────────────────────────────────────────────
+  function expandAll() {
+    BRANDS.forEach(b => { if (brandCollapsed[b.id]) expandBrand(b.id); });
+    SECTIONS.forEach(s => { if (sectionCollapsed[s]) expandSection(s); });
+  }
+
+  // ── CONTROL BUTTON STATE ──────────────────────────────────────
+  function updateControlBtn(id, collapsed) {
+    const btn = document.querySelector(`.brand-toggle-btn[data-brand="${id}"]`);
+    if (!btn) return;
+    if (collapsed) {
+      btn.style.opacity = '0.45';
+      btn.style.textDecoration = 'line-through';
+      btn.title = `Show ${id} columns`;
+    } else {
+      btn.style.opacity = '';
+      btn.style.textDecoration = '';
+      btn.title = `Hide ${id} columns`;
+    }
+  }
+
+  // ── INIT ──────────────────────────────────────────────────────
+  function init() {
+    // Brand group header click → toggle
+    BRANDS.forEach(brand => {
+      const groupCells = [...groupHeadRow.children];
+      const cell = groupCells[brand.groupIdx];
+      const btn = cell.querySelector('.toggle-col-btn');
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleBrand(brand.id);
+        });
+      }
+      // Also clicking the header cell itself (but not the button) toggles
+      cell.addEventListener('click', () => {
+        if (!brandCollapsed[brand.id]) collapseBrand(brand.id);
+      });
+    });
+
+    // Section row click → toggle
+    document.querySelectorAll('tr.section-row').forEach(row => {
+      const id = row.dataset.section;
+      row.addEventListener('click', (e) => {
+        // Don't double-fire from button inside
+        toggleSection(id);
+      });
+    });
+
+    // Top control bar brand buttons
+    document.querySelectorAll('.brand-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => toggleBrand(btn.dataset.brand));
+    });
+
+    // Expand all
+    document.getElementById('expand-all-btn').addEventListener('click', expandAll);
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
