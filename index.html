@@ -12,8 +12,8 @@
   --c1: #D4924A; --c2: #F2B86A; --c3: #FFCF85;
   --g1: #26B8DC; --g2: #5DD2EF; --g3: #9DE8FA;
   --e1: #C83056; --e2: #E84E72; --e3: #FFA0B8;
-  --p1: #CC3A90; --p2: #F05AB5; --p3: #FFAADA;
-  --k1: #9B55E0; --k2: #B87DFF; --k3: #D4AAFF;
+  --p1: #9B55E0; --p2: #B87DFF; --p3: #D4AAFF;
+  --k1: #CC3A90; --k2: #F05AB5; --k3: #FFAADA;
   --tier-cheap: #3DD68C;
   --tier-mid:   #F5C842;
   --tier-heavy: #F26060;
@@ -34,8 +34,8 @@ body {
     radial-gradient(ellipse 50% 22% at 5%  0%, rgba(212,146,74,0.06)  0%, transparent 55%),
     radial-gradient(ellipse 45% 20% at 30% 0%, rgba(38,184,220,0.04)  0%, transparent 55%),
     radial-gradient(ellipse 40% 18% at 55% 0%, rgba(200,48,86,0.05)   0%, transparent 55%),
-    radial-gradient(ellipse 40% 18% at 78% 0%, rgba(204,58,144,0.05)  0%, transparent 55%),
-    radial-gradient(ellipse 35% 16% at 98% 0%, rgba(155,85,224,0.05)  0%, transparent 55%);
+    radial-gradient(ellipse 40% 18% at 78% 0%, rgba(155,85,224,0.05)  0%, transparent 55%),
+    radial-gradient(ellipse 35% 16% at 98% 0%, rgba(204,58,144,0.05)  0%, transparent 55%);
 }
 
 /* ── HEADER ── */
@@ -61,12 +61,12 @@ h1 { font-size:clamp(20px,3vw,36px); font-weight:800; letter-spacing:-0.025em; l
 .lp-e1{background:rgba(200,48,86,.12);color:var(--e1);border:1px solid rgba(200,48,86,.28);}
 .lp-e2{background:rgba(232,78,114,.10);color:var(--e2);border:1px solid rgba(232,78,114,.26);}
 .lp-e3{background:rgba(255,160,184,.09);color:var(--e3);border:1px solid rgba(255,160,184,.22);}
-.lp-p1{background:rgba(204,58,144,.12);color:var(--p1);border:1px solid rgba(204,58,144,.28);}
-.lp-p2{background:rgba(240,90,181,.10);color:var(--p2);border:1px solid rgba(240,90,181,.26);}
-.lp-p3{background:rgba(255,170,218,.09);color:var(--p3);border:1px solid rgba(255,170,218,.22);}
-.lp-k1{background:rgba(155,85,224,.12);color:var(--k1);border:1px solid rgba(155,85,224,.28);}
-.lp-k2{background:rgba(184,125,255,.10);color:var(--k2);border:1px solid rgba(184,125,255,.26);}
-.lp-k3{background:rgba(212,170,255,.09);color:var(--k3);border:1px solid rgba(212,170,255,.22);}
+.lp-p1{background:rgba(155,85,224,.12);color:var(--p1);border:1px solid rgba(155,85,224,.28);}
+.lp-p2{background:rgba(184,125,255,.10);color:var(--p2);border:1px solid rgba(184,125,255,.26);}
+.lp-p3{background:rgba(212,170,255,.09);color:var(--p3);border:1px solid rgba(212,170,255,.22);}
+.lp-k1{background:rgba(204,58,144,.12);color:var(--k1);border:1px solid rgba(204,58,144,.28);}
+.lp-k2{background:rgba(240,90,181,.10);color:var(--k2);border:1px solid rgba(240,90,181,.26);}
+.lp-k3{background:rgba(255,170,218,.09);color:var(--k3);border:1px solid rgba(255,170,218,.22);}
 
 .tier-key { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:4px; align-items:center; }
 .tier-key-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; }
@@ -74,7 +74,7 @@ h1 { font-size:clamp(20px,3vw,36px); font-weight:800; letter-spacing:-0.025em; l
 .ts-cheap{color:var(--tier-cheap);border-color:var(--tier-cheap);background:rgba(61,214,140,.08);}
 .ts-mid{color:var(--tier-mid);border-color:var(--tier-mid);background:rgba(245,200,66,.08);}
 .ts-heavy{color:var(--tier-heavy);border-color:var(--tier-heavy);background:rgba(242,96,96,.08);}
-.ts-best{color:#1AE87A;border-color:#1AE87A;background:rgba(26,232,122,.08);font-weight:700;}
+.ts-best{color:#fff;border-color:rgba(26,232,122,.4);background:rgba(26,232,122,.22);font-weight:700;}
 .ts-note { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); }
 
 /* ── CONTROLS BAR ── */
@@ -140,8 +140,8 @@ table { width:100%; min-width:900px; border-collapse:collapse; }
 .cg-claude { color:var(--c2); background:rgba(212,146,74,.06); border-top:2px solid rgba(212,146,74,.40); }
 .cg-gpt    { color:var(--g2); background:rgba(38,184,220,.05); border-top:2px solid rgba(38,184,220,.40); }
 .cg-gem    { color:var(--e2); background:rgba(200,48,86,.05);  border-top:2px solid rgba(200,48,86,.40);  }
-.cg-cop    { color:var(--p2); background:rgba(204,58,144,.05); border-top:2px solid rgba(204,58,144,.40); }
-.cg-grk    { color:var(--k2); background:rgba(155,85,224,.05); border-top:2px solid rgba(155,85,224,.40); }
+.cg-cop    { color:var(--p2); background:rgba(155,85,224,.05); border-top:2px solid rgba(155,85,224,.40); }
+.cg-grk    { color:var(--k2); background:rgba(204,58,144,.05); border-top:2px solid rgba(204,58,144,.40); }
 
 /* brand header inner layout */
 .brand-header-inner {
@@ -278,8 +278,8 @@ tbody tr.row-hidden { display:none !important; }
 .bc1{background:rgba(212,146,74,.055);} .bc2{background:rgba(242,184,106,.065);} .bc3{background:rgba(255,207,133,.055);}
 .bg1{background:rgba(38,184,220,.045);} .bg2{background:rgba(93,210,239,.055);} .bg3{background:rgba(157,232,250,.045);}
 .be1{background:rgba(200,48,86,.045);}  .be2{background:rgba(232,78,114,.055);} .be3{background:rgba(255,160,184,.045);}
-.bp1{background:rgba(204,58,144,.045);} .bp2{background:rgba(240,90,181,.055);} .bp3{background:rgba(255,170,218,.045);}
-.bk1{background:rgba(155,85,224,.045);} .bk2{background:rgba(184,125,255,.055);} .bk3{background:rgba(212,170,255,.045);}
+.bp1{background:rgba(155,85,224,.045);} .bp2{background:rgba(184,125,255,.055);} .bp3{background:rgba(212,170,255,.045);}
+.bk1{background:rgba(204,58,144,.045);} .bk2{background:rgba(240,90,181,.055);} .bk3{background:rgba(255,170,218,.045);}
 .model-cell { width:100px; min-width:92px; vertical-align:top; }
 
 /* ── ANSWER BADGES ── */
@@ -288,8 +288,8 @@ tbody tr.row-hidden { display:none !important; }
 .ab-c1{color:var(--c1);background:rgba(212,146,74,.11);}  .ab-c2{color:var(--c2);background:rgba(242,184,106,.11);} .ab-c3{color:var(--c3);background:rgba(255,207,133,.11);}
 .ab-g1{color:var(--g1);background:rgba(38,184,220,.10);}  .ab-g2{color:var(--g2);background:rgba(93,210,239,.10);}  .ab-g3{color:var(--g3);background:rgba(157,232,250,.10);}
 .ab-e1{color:var(--e1);background:rgba(200,48,86,.10);}   .ab-e2{color:var(--e2);background:rgba(232,78,114,.10);}  .ab-e3{color:var(--e3);background:rgba(255,160,184,.10);}
-.ab-p1{color:var(--p1);background:rgba(204,58,144,.10);}  .ab-p2{color:var(--p2);background:rgba(240,90,181,.10);}  .ab-p3{color:var(--p3);background:rgba(255,170,218,.10);}
-.ab-k1{color:var(--k1);background:rgba(155,85,224,.10);}  .ab-k2{color:var(--k2);background:rgba(184,125,255,.10);} .ab-k3{color:var(--k3);background:rgba(212,170,255,.10);}
+.ab-p1{color:var(--p1);background:rgba(155,85,224,.10);}  .ab-p2{color:var(--p2);background:rgba(184,125,255,.10);}  .ab-p3{color:var(--p3);background:rgba(212,170,255,.10);}
+.ab-k1{color:var(--k1);background:rgba(204,58,144,.10);}  .ab-k2{color:var(--k2);background:rgba(240,90,181,.10);}  .ab-k3{color:var(--k3);background:rgba(255,170,218,.10);}
 
 /* ── MODEL PICK BORDERS ── */
 .pick-c1{box-shadow:inset 0 0 0 2px var(--c1), 0 0 8px rgba(212,146,74,.22);}
@@ -301,19 +301,16 @@ tbody tr.row-hidden { display:none !important; }
 .pick-e1{box-shadow:inset 0 0 0 2px var(--e1), 0 0 8px rgba(200,48,86,.22);}
 .pick-e2{box-shadow:inset 0 0 0 2px var(--e2), 0 0 9px rgba(232,78,114,.25);}
 .pick-e3{box-shadow:inset 0 0 0 2px var(--e3), 0 0 9px rgba(255,160,184,.25);}
-.pick-p1{box-shadow:inset 0 0 0 2px var(--p1), 0 0 8px rgba(204,58,144,.22);}
-.pick-p2{box-shadow:inset 0 0 0 2px var(--p2), 0 0 9px rgba(240,90,181,.25);}
-.pick-p3{box-shadow:inset 0 0 0 2px var(--p3), 0 0 9px rgba(255,170,218,.25);}
-.pick-k1{box-shadow:inset 0 0 0 2px var(--k1), 0 0 8px rgba(155,85,224,.22);}
-.pick-k2{box-shadow:inset 0 0 0 2px var(--k2), 0 0 9px rgba(184,125,255,.25);}
-.pick-k3{box-shadow:inset 0 0 0 2px var(--k3), 0 0 9px rgba(212,170,255,.25);}
+.pick-p1{box-shadow:inset 0 0 0 2px var(--p1), 0 0 8px rgba(155,85,224,.22);}
+.pick-p2{box-shadow:inset 0 0 0 2px var(--p2), 0 0 9px rgba(184,125,255,.25);}
+.pick-p3{box-shadow:inset 0 0 0 2px var(--p3), 0 0 9px rgba(212,170,255,.25);}
+.pick-k1{box-shadow:inset 0 0 0 2px var(--k1), 0 0 8px rgba(204,58,144,.22);}
+.pick-k2{box-shadow:inset 0 0 0 2px var(--k2), 0 0 9px rgba(240,90,181,.25);}
+.pick-k3{box-shadow:inset 0 0 0 2px var(--k3), 0 0 9px rgba(255,170,218,.25);}
 
 /* ── OVERALL BEST PICK ── */
 .best-pick {
-  box-shadow:
-    inset 0 0 0 3px #1AE87A,
-    inset 0 0 0 6px rgba(26,232,122,0.14),
-    0 0 20px rgba(26,232,122,0.38) !important;
+  background: rgba(26,232,122,0.18) !important;
   position: relative;
   z-index: 1;
 }
@@ -325,16 +322,16 @@ tbody tr.row-hidden { display:none !important; }
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: #1AE87A;
-  opacity: 0.9;
+  color: #fff;
+  opacity: 0.72;
 }
 
 .model-note { font-size:11px; color:var(--muted); line-height:1.45; }
 [class*="pick-c"] .model-note{color:rgba(242,184,106,.72);}
 [class*="pick-g"] .model-note{color:rgba(93,210,239,.72);}
 [class*="pick-e"] .model-note{color:rgba(232,78,114,.72);}
-[class*="pick-p"] .model-note{color:rgba(240,90,181,.72);}
-[class*="pick-k"] .model-note{color:rgba(184,125,255,.72);}
+[class*="pick-p"] .model-note{color:rgba(184,125,255,.72);}
+[class*="pick-k"] .model-note{color:rgba(240,90,181,.72);}
 
 /* ── FOOTNOTE ── */
 .footnote { max-width:1720px; margin:18px auto 0; display:flex; gap:18px; flex-wrap:wrap; }
@@ -386,7 +383,7 @@ tbody tr.row-hidden { display:none !important; }
 <header>
   <p class="eyebrow">Platform Comparison / Model Selection Reference — Updated March 2026</p>
   <h1>Right model. Right task.<br>Five platforms.</h1>
-  <p class="subtitle">Models listed cheapest-first within each brand. Green double border marks the overall best pick for that task across all platforms.</p>
+  <p class="subtitle">Models listed cheapest-first within each brand. Green cell background marks the overall best pick for that task across all platforms.</p>
 
   <div class="brand-row">
     <div class="brand-group">
@@ -439,7 +436,7 @@ tbody tr.row-hidden { display:none !important; }
     <span class="tier-key-label" style="margin-left:8px">Cell border:</span>
     <span class="tier-swatch" style="color:var(--c2);border-color:var(--c2);background:rgba(242,184,106,.06);">Brand pick</span>
     <span class="tier-swatch ts-best">Overall best</span>
-    <span class="ts-note">&nbsp;&nbsp;Overall best = thick green border + BEST label</span>
+    <span class="ts-note">&nbsp;&nbsp;Overall best = green cell background + BEST label</span>
   </div>
 </header>
 
@@ -450,8 +447,8 @@ tbody tr.row-hidden { display:none !important; }
   <button class="ctrl-btn brand-toggle-btn" data-brand="claude" style="color:var(--c2); border-color:rgba(212,146,74,.35);">Claude</button>
   <button class="ctrl-btn brand-toggle-btn" data-brand="gpt" style="color:var(--g2); border-color:rgba(38,184,220,.35);">ChatGPT</button>
   <button class="ctrl-btn brand-toggle-btn" data-brand="gem" style="color:var(--e2); border-color:rgba(200,48,86,.35);">Gemini</button>
-  <button class="ctrl-btn brand-toggle-btn" data-brand="cop" style="color:var(--p2); border-color:rgba(204,58,144,.35);">Copilot</button>
-  <button class="ctrl-btn brand-toggle-btn" data-brand="grk" style="color:var(--k2); border-color:rgba(155,85,224,.35);">Grok</button>
+  <button class="ctrl-btn brand-toggle-btn" data-brand="cop" style="color:var(--p2); border-color:rgba(155,85,224,.35);">Copilot</button>
+  <button class="ctrl-btn brand-toggle-btn" data-brand="grk" style="color:var(--k2); border-color:rgba(204,58,144,.35);">Grok</button>
 </div>
 
 <div class="table-scroll">
