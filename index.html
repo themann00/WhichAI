@@ -271,6 +271,42 @@ tbody tr.row-hidden { display:none !important; }
 
 /* ── TASK CELL ── */
 .task-cell { width:118px; min-width:108px; }
+
+/* ── BEST OVERALL COLUMN ── */
+.cg-best {
+  color: #1AE87A;
+  background: rgba(26,232,122,0.07);
+  border-top: 2px solid rgba(26,232,122,0.45);
+  cursor: default !important;
+}
+.cg-best:hover { filter: none !important; }
+.best-col-cell {
+  width: 120px;
+  min-width: 110px;
+  vertical-align: top;
+  background: rgba(26,232,122,0.13) !important;
+  border-right: 1px solid rgba(26,232,122,0.20) !important;
+}
+.best-brand {
+  font-size: 11px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 2px;
+  color: #E8E8F2;
+}
+.best-model {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(232,232,242,0.55);
+  display: block;
+  margin-bottom: 5px;
+  letter-spacing: 0.06em;
+}
+.best-reason {
+  font-size: 10px;
+  color: rgba(232,232,242,0.42);
+  line-height: 1.4;
+}
 .task-name { font-size:13px; font-weight:700; display:block; margin-bottom:3px; }
 .task-sub  { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); }
 
@@ -456,6 +492,7 @@ tbody tr.row-hidden { display:none !important; }
   <thead>
     <tr class="col-group-head">
       <th class="cg-task" rowspan="2" style="vertical-align:middle;width:118px;">Task</th>
+      <th class="cg-best" rowspan="2" style="vertical-align:middle;width:120px;text-align:center;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:0.13em;text-transform:uppercase;font-weight:500;white-space:nowrap;">Best<br>Overall</th>
       <th colspan="3" class="cg-claude" data-brand="claude">
         <div class="brand-header-inner">
           <span class="brand-name">Claude (Anthropic)</span>
@@ -509,7 +546,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <!-- ===== CODING ===== -->
 <tr class="section-row" data-section="coding">
-  <td colspan="16">
+  <td colspan="17">
     <div class="section-header-inner">
       <span class="section-label">Coding</span>
       <span class="section-count"></span>
@@ -520,6 +557,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="coding">
   <td class="task-cell"><span class="task-name">Quick code check</span><span class="task-sub">Debug / syntax / review</span></td>
+  <td class="best-col-cell"><span class="best-brand">Claude</span><span class="best-model">Sonnet 4.6</span><span class="best-reason">Catches logic errors at mid cost</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Misses subtle logic faults</p></td>
   <td class="model-cell bc2 pick-c2 best-pick" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Catches logic errors; explains fixes clearly at mid cost</p></td>
   <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">Overkill for spot checks</p></td>
@@ -539,6 +577,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="coding">
   <td class="task-cell"><span class="task-name">Full app build</span><span class="task-sub">Multi-file, architecture</span></td>
+  <td class="best-col-cell"><span class="best-brand">Grok</span><span class="best-model">4 Heavy</span><span class="best-reason">Multi-agent; top coding benchmarks</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Loses coherence across files</p></td>
   <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Good for scoped modules; not full architecture</p></td>
   <td class="model-cell bc3 pick-c3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Best-in-class for multi-file consistency</p></td>
@@ -558,6 +597,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="coding">
   <td class="task-cell"><span class="task-name">Full web build</span><span class="task-sub">HTML / CSS / JS / layout</span></td>
+  <td class="best-col-cell"><span class="best-brand">Claude</span><span class="best-model">Opus 4.6</span><span class="best-reason">CSS, semantics, a11y in one pass</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not reliable for responsive builds</p></td>
   <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Good for isolated components</p></td>
   <td class="model-cell bc3 pick-c3 best-pick" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Handles CSS, semantics, responsiveness, and accessibility together best</p></td>
@@ -577,7 +617,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <!-- ===== WRITING ===== -->
 <tr class="section-row" data-section="writing">
-  <td colspan="16">
+  <td colspan="17">
     <div class="section-header-inner">
       <span class="section-label">Writing</span>
       <span class="section-count"></span>
@@ -588,6 +628,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="writing">
   <td class="task-cell"><span class="task-name">Quick social posts</span><span class="task-sub">Short copy, captions</span></td>
+  <td class="best-col-cell"><span class="best-brand">Gemini</span><span class="best-model">Flash-Lite</span><span class="best-reason">Lowest cost; fully sufficient</span></td>
   <td class="model-cell bc1 pick-c1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Haiku ★</span><p class="model-note">Fast, capable, no wasted quota</p></td>
   <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Skip</span><p class="model-note">More than needed</p></td>
   <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">Wasteful</p></td>
@@ -607,6 +648,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="writing">
   <td class="task-cell"><span class="task-name">Long-form blog</span><span class="task-sub">1,000–3,000+ words</span></td>
+  <td class="best-col-cell"><span class="best-brand">Claude</span><span class="best-model">Sonnet 4.6</span><span class="best-reason">Best voice-matching at mid cost</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Loses voice over length</p></td>
   <td class="model-cell bc2 pick-c2 best-pick" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Best voice-matching and narrative consistency of any platform at mid cost</p></td>
   <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Upgrade if</span><p class="model-note">Only when post requires expert synthesis</p></td>
@@ -626,7 +668,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <!-- ===== RESEARCH ===== -->
 <tr class="section-row" data-section="research">
-  <td colspan="16">
+  <td colspan="17">
     <div class="section-header-inner">
       <span class="section-label">Research and Strategy</span>
       <span class="section-count"></span>
@@ -637,6 +679,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="research">
   <td class="task-cell"><span class="task-name">Article research</span><span class="task-sub">Source synthesis, fact-finding</span></td>
+  <td class="best-col-cell"><span class="best-brand">Copilot</span><span class="best-model">Smart</span><span class="best-reason">Search + Microsoft Graph grounding</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not built for source synthesis</p></td>
   <td class="model-cell bc2 pick-c2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Solid with web search enabled; identifies gaps well</p></td>
   <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Upgrade if</span><p class="model-note">High-stakes accuracy required</p></td>
@@ -656,6 +699,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="research">
   <td class="task-cell"><span class="task-name">Prompt engineering</span><span class="task-sub">Build prompts for AI tools</span></td>
+  <td class="best-col-cell"><span class="best-brand">Claude</span><span class="best-model">Opus 4.6</span><span class="best-reason">Best meta-reasoning of any platform</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Lacks meta-reasoning</p></td>
   <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Works for simpler prompts; misses edge cases</p></td>
   <td class="model-cell bc3 pick-c3 best-pick" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Reasons about model behavior; catches failure modes — best meta-reasoning of any platform</p></td>
@@ -675,7 +719,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <!-- ===== ADDITIONAL ===== -->
 <tr class="section-row" data-section="additional">
-  <td colspan="16">
+  <td colspan="17">
     <div class="section-header-inner">
       <span class="section-label">Additional Common AI Use-Cases</span>
       <span class="section-count"></span>
@@ -686,6 +730,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="additional">
   <td class="task-cell"><span class="task-name">Email drafting</span><span class="task-sub">Client, internal, outreach</span></td>
+  <td class="best-col-cell"><span class="best-brand">Claude</span><span class="best-model">Haiku 4.5</span><span class="best-reason">Best value for routine email</span></td>
   <td class="model-cell bc1 pick-c1 best-pick" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Haiku ★</span><p class="model-note">Clean professional copy at lowest Claude cost; best overall value for routine email</p></td>
   <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Upgrade if</span><p class="model-note">Tone-sensitive or high-stakes</p></td>
   <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">No justification</p></td>
@@ -705,6 +750,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="additional">
   <td class="task-cell"><span class="task-name">Data analysis</span><span class="task-sub">CSV, metrics, pattern-finding</span></td>
+  <td class="best-col-cell"><span class="best-brand">Grok</span><span class="best-model">4 Heavy</span><span class="best-reason">Top benchmark; multi-agent inference</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not suited for complex inference</p></td>
   <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Surface-level pattern summaries</p></td>
   <td class="model-cell bc3 pick-c3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Strong reasoning across ambiguous datasets</p></td>
@@ -724,6 +770,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="additional">
   <td class="task-cell"><span class="task-name">Document summary</span><span class="task-sub">PDFs, contracts, reports</span></td>
+  <td class="best-col-cell"><span class="best-brand">Gemini</span><span class="best-model">2.5 Flash</span><span class="best-reason">1M token context; best value</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Misses nuance in dense docs</p></td>
   <td class="model-cell bc2 pick-c2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Reliable structure extraction; good context handling</p></td>
   <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Upgrade if</span><p class="model-note">Legal docs requiring inferential judgment</p></td>
@@ -743,6 +790,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="additional">
   <td class="task-cell"><span class="task-name">Brainstorming</span><span class="task-sub">Ideas, concepts, angles</span></td>
+  <td class="best-col-cell"><span class="best-brand">ChatGPT</span><span class="best-model">Fast</span><span class="best-reason">Most variety at lowest cost</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Fallback</span><p class="model-note">Simple brainstorms; ideas repeat faster</p></td>
   <td class="model-cell bc2 pick-c2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Sonnet ★</span><p class="model-note">Better variety, fewer clichés</p></td>
   <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">Depth over breadth not what brainstorming needs</p></td>
@@ -762,6 +810,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="additional">
   <td class="task-cell"><span class="task-name">SEO and metadata</span><span class="task-sub">Title tags, meta, alt text</span></td>
+  <td class="best-col-cell"><span class="best-brand">Gemini</span><span class="best-model">Flash-Lite</span><span class="best-reason">Lowest cost; fully capable at scale</span></td>
   <td class="model-cell bc1 pick-c1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Haiku ★</span><p class="model-note">Character-constrained rules are a perfect Haiku fit</p></td>
   <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Skip</span><p class="model-note">Unnecessary</p></td>
   <td class="model-cell bc3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Skip</span><p class="model-note">Never use Opus for metadata</p></td>
@@ -781,6 +830,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="additional">
   <td class="task-cell"><span class="task-name">Strategic planning</span><span class="task-sub">Business decisions, proposals</span></td>
+  <td class="best-col-cell"><span class="best-brand">Grok</span><span class="best-model">4 Heavy</span><span class="best-reason">Real-time data + top tradeoff reasoning</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not capable of competing variables</p></td>
   <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Lower-stakes planning</p></td>
   <td class="model-cell bc3 pick-c3" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Excellent at risks, tradeoffs, and edge cases</p></td>
@@ -800,6 +850,7 @@ tbody tr.row-hidden { display:none !important; }
 
 <tr class="data-row" data-section="additional">
   <td class="task-cell"><span class="task-name">Automation workflows</span><span class="task-sub">APIs, tools, logic chains</span></td>
+  <td class="best-col-cell"><span class="best-brand">Claude</span><span class="best-model">Opus 4.6</span><span class="best-reason">Agentic multi-step; core Opus strength</span></td>
   <td class="model-cell bc1" data-brand-cell="claude" data-cell-idx="0"><span class="ans ab-c1 t-cheap">Skip</span><p class="model-note">Not suited for conditional logic at scale</p></td>
   <td class="model-cell bc2" data-brand-cell="claude" data-cell-idx="1"><span class="ans ab-c2 t-mid">Fallback</span><p class="model-note">Works for simpler automations</p></td>
   <td class="model-cell bc3 pick-c3 best-pick" data-brand-cell="claude" data-cell-idx="2"><span class="ans ab-c3 t-heavy">Opus ★</span><p class="model-note">Agentic multi-step workflows are a core Opus strength; best overall for API logic chains</p></td>
@@ -833,15 +884,15 @@ tbody tr.row-hidden { display:none !important; }
 <script>
 (() => {
   // Brand definitions:
-  // groupIdx = index of the <th> in the col-group-head row (0=task, 1=claude, 2=gpt, 3=gem, 4=cop, 5=grk)
+  // groupIdx = index of the <th> in the col-group-head row (0=task, 1=best-overall, 2=claude, 3=gpt, 4=gem, 5=cop, 6=grk)
   // subCols  = indices of <th> cells in the sub-head row (0-14)
-  // dataCols = indices of <td> cells in data rows (0=task, 1-15=brand cells)
+  // dataCols = indices of <td> cells in data rows (0=task, 1=best-overall, 2-16=brand cells)
   const BRANDS = [
-    { id: 'claude', name: 'Claude',  groupIdx: 1, subCols: [0,1,2],   dataCols: [1,2,3]   },
-    { id: 'gpt',    name: 'ChatGPT', groupIdx: 2, subCols: [3,4,5],   dataCols: [4,5,6]   },
-    { id: 'gem',    name: 'Gemini',  groupIdx: 3, subCols: [6,7,8],   dataCols: [7,8,9]   },
-    { id: 'cop',    name: 'Copilot', groupIdx: 4, subCols: [9,10,11], dataCols: [10,11,12] },
-    { id: 'grk',    name: 'Grok',    groupIdx: 5, subCols: [12,13,14],dataCols: [13,14,15] },
+    { id: 'claude', name: 'Claude',  groupIdx: 2, subCols: [0,1,2],   dataCols: [2,3,4]    },
+    { id: 'gpt',    name: 'ChatGPT', groupIdx: 3, subCols: [3,4,5],   dataCols: [5,6,7]    },
+    { id: 'gem',    name: 'Gemini',  groupIdx: 4, subCols: [6,7,8],   dataCols: [8,9,10]   },
+    { id: 'cop',    name: 'Copilot', groupIdx: 5, subCols: [9,10,11], dataCols: [11,12,13] },
+    { id: 'grk',    name: 'Grok',    groupIdx: 6, subCols: [12,13,14],dataCols: [14,15,16] },
   ];
 
   const SECTIONS = ['coding', 'writing', 'research', 'additional'];
